@@ -84,7 +84,7 @@ if os.path.exists('data.csv') and os.path.getsize('data.csv') > 0:
     if "selected" not in st.session_state:
         st.session_state["selected"] = list(csvdf[monthCol])
     if "min" not in st.session_state:
-        st.session_state["min"] = csvdf[amtCol].min()
+        st.session_state["min"] = int(csvdf[amtCol].min())
         
     #user filters months (multiselect)
     selected = st.multiselect( #NEW
@@ -97,15 +97,15 @@ if os.path.exists('data.csv') and os.path.getsize('data.csv') > 0:
     #user chooses minimum amount to display (slider)
     st.write("Choose a minimum amount to display:")
     if st.button("Set to max"):
-        st.session_state["min"] = csvdf[amtCol].max()
+        st.session_state["min"] = int(csvdf[amtCol].max())
     if st.button("Set to min"):
-        st.session_state["min"] = csvdf[amtCol].min()
+        st.session_state["min"] = int(csvdf[amtCol].min())
     stepping = st.number_input("Choose a step for the slider below:", min_value=1, value=50)
     st.slider( #NEW
         "",
-        csvdf[amtCol].min(),
-        csvdf[amtCol].max(),
-        csvdf[amtCol].min(),
+        int(csvdf[amtCol].min()),
+        int(csvdf[amtCol].max()),
+        int(csvdf[amtCol].min()),
         step=stepping,
         key="min"
     )
