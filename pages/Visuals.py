@@ -1,180 +1,98 @@
-# This creates the page for displaying data visualizations.
-# It should read data from both 'data.csv' and 'data.json' to create graphs.
+# This creates the page for users to input data.
+# The collected data should be appended to the 'data.csv' file.
 
 import streamlit as st
 import pandas as pd
-import json # The 'json' module is needed to work with JSON files.
-import os   # The 'os' module helps with file system operations.
+import os # The 'os' module is used for file system operations (e.g. checking if a file exists).
 import csv
 
 # PAGE CONFIGURATION
 st.set_page_config(
-    page_title="Visualizations",
-    page_icon="📈",
+    page_title="Survey",
+    page_icon="📝",
 )
 
-# PAGE TITLE AND INFORMATION
-st.title("Data Visualizations 📈")
-st.write("This page displays graphs based on the collected data.")
+# PAGE TITLE AND USER DIRECTIONS
+st.title("Data Collection Survey 📝")
+st.write("Please fill out the form below to add your data to the dataset.")
+# DATA INPUT FORM
+# 'st.form' creates a container that groups input widgets.
+# The form is submitted only when the user clicks the 'st.form_submit_button'.
+# This is useful for preventing the app from re-running every time a widget is changed.
+with st.form("survey_form"):
+    # Create text input widgets for the user to enter data.
+    # The first argument is the label that appears above the input box.
+    category_input = st.text_input("How do you want to name your month column?", placeholder="Month")
+    value_input = st.text_input("How do you want to name your amount column?", placeholder="Amount")
+    months = ["January", "February", "March", "April", "May", "June" , "July", "August", "September"]
 
-
-# DATA LOADING
-# A crucial step is to load the data from the files.
-# It's important to add error handling to prevent the app from crashing if a file is empty or missing.
-
-st.divider()
-st.header("Your finances from January to September")
-
-# TO DO:
-# 1. Load the data from 'data.csv' into a pandas DataFrame.
-#    - Use a 'try-except' block or 'os.path.exists' to handle cases where the file doesn't exist.
-# 2. Load the data from 'data.json' into a Python dictionary.
-#    - Use a 'try-except' block here as well.
-
-#loading data from csv file
-try:
-    csvdf = pd.read_csv('data.csv')
-    st.dataframe(csvdf)    
-except pd.errors.EmptyDataError:
-    st.warning("The 'data.csv' file is empty or has no valid data to process.")
-except Exception:
-    st.warning("Sorry, there was a problem reading the 'data.csv' file.")
-#loading data from json file
-try:
-    with open("data.json", "r") as infile:
-        myData = json.load(infile) #converting json data into a python dictionary or a list
-    jsondf = pd.DataFrame(myData["data_points"])
-    st.header(myData["chart_title"])
-    st.dataframe(jsondf)
-except:
-    st.warning("Sorry, there was a problem reading the json file.")
-
-# GRAPH CREATION
-# The lab requires you to create 3 graphs: one static and two dynamic.
-# You must use both the CSV and JSON data sources at least once.
-
-st.divider()
-st.header("Graphs")
-
-# GRAPH 1: STATIC GRAPH
-try:
-    st.subheader(myData["chart_title"]) # CHANGE THIS TO THE TITLE OF YOUR GRAPH
-    # TO DO:
-    # - Create a static graph (e.g., bar chart, line chart) using st.bar_chart() or st.line_chart().
-    # - Use data from either the CSV or JSON file.
-    # - Write a description explaining what the graph shows.
-    st.area_chart(jsondf, x="Income (thousand USD)", y="Well-being")
-    st.write("This is a **static area chart**. Can money buy happiness? This graph shows the harsh reality: happiness increases with reported income. In other words, research found that higher incomes are associated with higher daily happiness and overal life satisfaction.")
-    st.info("Data's source: Proceedings of the National Academy of Sciences")
-except:
-    pass
-
-
-# GRAPH 2: DYNAMIC GRAPH
-try:
-    st.divider()
-    st.subheader("Saving Amount by Month") # CHANGE THIS TO THE TITLE OF YOUR GRAPH
-    # TODO:
-    # - Create a dynamic graph that changes based on user input.
-    # - Use at least one interactive widget (e.g., st.slider, st.selectbox, st.multiselect).
-    # - Use Streamlit's Session State (st.session_state) to manage the interaction.
-    # - Add a '#NEW' comment next to at least 3 new Streamlit functions you use in this lab.
-    # - Write a description explaining the graph and how to interact with it.
-    monthCol = csvdf.columns[0]
-    amtCol = csvdf.columns[1]
+    sav1 = st.number_input("Enter your saving amount for January ($):",
+                                   value=0, step=50)
+    sav2 = st.number_input("Enter your saving amount for February:",
+                                   value=0, step=50)
+    sav3 = st.number_input("Enter your saving amount for March:",
+                                   value=0, step=50)
+    sav4 = st.number_input("Enter your saving amount for April:",
+                                   value=0, step=50)
+    sav5 = st.number_input("Enter your saving amount for May:",
+                                   value=0, step=50)
+    sav6 = st.number_input("Enter your saving amount for June:",
+                                   value=0, step=50)
+    sav7 = st.number_input("Enter your saving amount for July:",
+                                   value=0, step=50)
+    sav8 = st.number_input("Enter your saving amount for August:",
+                                   value=0, step=50)
+    sav9 = st.number_input("Enter your saving amount for September:",
+                                   value=0, step=50)
+    savings = [sav1, sav2, sav3, sav4, sav5, sav6, sav7, sav8, sav9]
+    #if cleared:
+    cleared = st.form_submit_button("Clear Data")
+    if cleared:
+        open('data.csv', 'w').close()
+        st.success("CSV file cleared!")
     
-    if "selected" not in st.session_state:
-        st.session_state["selected"] = list(csvdf[monthCol])
-    if "min" not in st.session_state:
-        st.session_state["min"] = int(csvdf[amtCol].min())
+    # The submit button for the form.
+    submitted = st.form_submit_button("Submit Data", type='primary')
+
+    # This block of code runs ONLY when the submit button is clicked.
+    if submitted:
+        if not category_input and not value_input:
+            category_input = "Month"
+            value_input = "Amount"
+        elif not category_input:
+            category_input = "Month"
+        elif not value_input:
+            value_input = "Amount"
+
+        with open('data.csv', 'a', newline='') as datafile: #open in append mode
+            writer = csv.writer(datafile)
+            writer.writerow([category_input, value_input])
+            for month, saving in zip(months, savings):
+                writer.writerow([month, saving])
+            
+        # --- YOUR LOGIC GOES HERE --- (DONE)
+        # TO DO:
+        # 1. Create a new row of data from 'category_input' and 'value_input'.
+        # 2. Append this new row to the 'data.csv' file.
+        #    - You can use pandas or Python's built-in 'csv' module.
+        #    - Make sure to open the file in 'append' mode ('a').
+        #    - Don't forget to add a newline character '\n' at the end.
         
-    #user filters months (multiselect)
-    selected = st.multiselect( #NEW
-        "Which month(s) do you want to graph?",
-        options=list(csvdf[monthCol]),
-        default=list(csvdf[monthCol])
-    )
-    st.session_state["selected"] = selected
+        st.success("Your data has been submitted! Go to the visualisation page to see graphs.")
 
-    #user chooses minimum amount to display (slider)
-    st.write("Choose a minimum amount to display:")
-    if st.button("Set to max"):
-        st.session_state["min"] = int(csvdf[amtCol].max())
-    if st.button("Set to min"):
-        st.session_state["min"] = int(csvdf[amtCol].min())
-    stepping = st.number_input("Choose a step for the slider below:", min_value=1, value=50)
-    st.slider( #NEW
-        "",
-        int(csvdf[amtCol].min()),
-        int(csvdf[amtCol].max()),
-        int(csvdf[amtCol].min()),
-        step=stepping,
-        key="min"
-    )
+# DATA DISPLAY
+# This section shows the current contents of the CSV file, which helps in debugging.
+st.divider() # Adds a horizontal line for visual separation.
+st.header("Current Data in CSV")
 
-    filtered = csvdf[
-        (csvdf[monthCol].isin(st.session_state["selected"])) &
-        (csvdf[amtCol] >= st.session_state["min"])
-    ]
-    order = ["January", "February", "March", "April", "May", "June",
-             "July", "August", "September"]
-    filtered[monthCol] = pd.Categorical(filtered[monthCol],
-                                     categories=order, ordered=True)
-    filtered = filtered.sort_values(monthCol)
-    st.line_chart(filtered, x=monthCol, y=amtCol)
-    #months are displayed in the right order
-    st.write("This graph is a **dynamic line chart**. It shows your saving amount by month and allows you to change the graph in real time. Check out the info box for more instructions.")
-    st.info("You can use the multiselect box to add months you would like to display or drop months you would like to hide. The 'Set to max' button will help you quickly choose the greatest amount, and the 'Set to min' the smallest amount. You can also drag the slider to specify the minimum amount you would like to show on the graph.")
-except:
-    pass
-    
-# GRAPH 3: DYNAMIC GRAPH
-try:
-    st.divider()
-    st.subheader("Histogram for Amounts") # CHANGE THIS TO THE TITLE OF YOUR GRAPH
-    # TO DO:
-    # - Create another dynamic graph.
-    # - If you used CSV data for Graph 1 & 2, you MUST use JSON data here (or vice-versa).
-    # - This graph must also be interactive and use Session State.
-    # - Remember to add a description and use '#NEW' comments.
-
-    #user chooses if they want to graph postive, negative, or all balances (radio)
-    if "balances" not in st.session_state:
-        st.session_state["balances"] = "All"
-
-    st.write("Choose which type of balance you would like to graph:")
-    incr = st.button("Next option") #NEW
-    if incr:
-        if st.session_state["balances"] == "All":
-            st.session_state["balances"] =  "Positive & Zero"
-        elif st.session_state["balances"] == "Positive & Zero":
-            st.session_state["balances"] = "Negative"
-        else:
-            st.session_state["balances"] = "All"
-
-    st.radio( #NEW
-    "",
-    ["All", "Positive & Zero", "Negative"],
-    index=["All", "Positive & Zero", "Negative"].index(st.session_state["balances"]),
-    key="balances"
-)
-    
-    if st.session_state["balances"] == "Positive & Zero":
-        bar = csvdf[csvdf[amtCol] >= 0]
-    elif st.session_state["balances"] == "Negative":
-        bar = csvdf[csvdf[amtCol] < 0]
-    else:
-        bar = csvdf
-
-    
-    #graphing counts
-    bar = bar.value_counts().reset_index()
-    bar.columns = ['index', amtCol, 'Count']
-    
-
-    st.bar_chart(bar, x=amtCol, y='Count')
-
-    st.write("This is a **dynamic bar chart**. It graphs how many time a saving amount appears in your data. Check out the info box for more instructions.")
-    st.info('To interact with this graph, you can choose which type of balance you would like to see. The next button is there so you can quickly go through the options. By default, the graph will show all balances. By choosing "Positive & Zero", you will graph only amounts that are greater or equal to zero. Otherwise, if you choose "Negative", you will graph only amounts that are less than zero.')
-except:
-    pass
+# Check if the CSV file exists and is not empty before trying to read it.
+if os.path.exists('data.csv') and os.path.getsize('data.csv') > 0:
+    try:
+        #read the CSV file
+        current_data_df = pd.read_csv('data.csv')
+        #show the DataFrame as a table on screen
+        st.dataframe(current_data_df)
+    except:
+        st.warning("The 'data.csv' file is empty or does not exist yet.")
+else:
+    st.warning("The 'data.csv' file is empty or does not exist yet.")
