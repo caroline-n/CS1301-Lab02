@@ -32,11 +32,13 @@ st.header("Your finances from January to September")
 #    - Use a 'try-except' block here as well.
 
 #loading data from csv file
-if os.path.exists('data.csv') and os.path.getsize('data.csv') > 0:
+try:
     csvdf = pd.read_csv('data.csv')
     st.dataframe(csvdf)    
-else:
-    st.warning("The 'data.csv' file is empty or does not exist yet.")
+except pd.errors.EmptyDataError:
+    st.warning("The 'data.csv' file is empty or has no valid data to process.")
+except Exception:
+    st.warning("Sorry, there was a problem reading the 'data.csv' file.")
 #loading data from json file
 try:
     with open("data.json", "r") as infile:
@@ -45,7 +47,7 @@ try:
     st.header(myData["chart_title"])
     st.dataframe(jsondf)
 except:
-    st.warning("Sorry, there is something wrong with the json file.")
+    st.warning("Sorry, there was a problem reading the json file.")
 
 # GRAPH CREATION
 # The lab requires you to create 3 graphs: one static and two dynamic.
