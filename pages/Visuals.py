@@ -71,7 +71,7 @@ except:
 
 
 # GRAPH 2: DYNAMIC GRAPH
-if os.path.exists('data.csv') and os.path.getsize('data.csv') > 0:
+try:
     st.divider()
     st.subheader("Saving Amount by Month") # CHANGE THIS TO THE TITLE OF YOUR GRAPH
     # TODO:
@@ -125,9 +125,11 @@ if os.path.exists('data.csv') and os.path.getsize('data.csv') > 0:
     #months are displayed in the right order
     st.write("This graph is a **dynamic line chart**. It shows your saving amount by month and allows you to change the graph in real time. Check out the info box for more instructions.")
     st.info("You can use the multiselect box to add months you would like to display or drop months you would like to hide. The 'Set to max' button will help you quickly choose the greatest amount, and the 'Set to min' the smallest amount. You can also drag the slider to specify the minimum amount you would like to show on the graph.")
-
+except:
+    pass
+    
 # GRAPH 3: DYNAMIC GRAPH
-if os.path.exists('data.csv') and os.path.getsize('data.csv') > 0:
+try:
     st.divider()
     st.subheader("Histogram for Amounts") # CHANGE THIS TO THE TITLE OF YOUR GRAPH
     # TO DO:
@@ -174,4 +176,5 @@ if os.path.exists('data.csv') and os.path.getsize('data.csv') > 0:
 
     st.write("This is a **dynamic bar chart**. It graphs how many time a saving amount appears in your data. Check out the info box for more instructions.")
     st.info('To interact with this graph, you can choose which type of balance you would like to see. The next button is there so you can quickly go through the options. By default, the graph will show all balances. By choosing "Positive & Zero", you will graph only amounts that are greater or equal to zero. Otherwise, if you choose "Negative", you will graph only amounts that are less than zero.')
-
+except:
+    pass
