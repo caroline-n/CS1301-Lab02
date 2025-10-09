@@ -177,4 +177,4 @@ try:
     st.write("This is a **dynamic bar chart**. It graphs how many time a saving amount appears in your data. Check out the info box for more instructions.")
     st.info('To interact with this graph, you can choose which type of balance you would like to see. The "Next option" button is there so you can quickly go through the options. By default, the graph will show all balances. By choosing "Positive & Zero", you will graph only amounts that are greater or equal to zero. Otherwise, if you choose "Negative", you will graph only amounts that are less than zero.')
 except:
-    st.warning("Sorry, there was a problem reading the csv file.")
+    st.warning("Sorry, there was a problem reading the csv file. If you have not filled out the survey, please do so first.")
