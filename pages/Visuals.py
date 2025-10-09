@@ -36,7 +36,7 @@ try:
     csvdf = pd.read_csv('data.csv')
     st.dataframe(csvdf)    
 except pd.errors.EmptyDataError:
-    st.warning("The 'data.csv' file is empty or has no valid data to process.")
+    st.warning("The 'data.csv' file is empty or has no valid data to process. Please fill out the survery first.")
 except Exception:
     st.warning("Sorry, there was a problem reading the 'data.csv' file.")
 #loading data from json file
@@ -47,7 +47,7 @@ try:
     st.header(myData["chart_title"])
     st.dataframe(jsondf)
 except:
-    st.warning("Sorry, there was a problem reading the json file.")
+    st.warning("Sorry, there was a problem reading the json file. If you have not filled out the survey, please do so first.")
 
 # GRAPH CREATION
 # The lab requires you to create 3 graphs: one static and two dynamic.
@@ -126,7 +126,7 @@ try:
     st.write("This graph is a **dynamic line chart**. It shows your saving amount by month and allows you to change the graph in real time. Check out the info box for more instructions.")
     st.info("You can use the multiselect box to add months you would like to display or drop months you would like to hide. The 'Set to max' button will help you quickly choose the greatest amount, and the 'Set to min' the smallest amount. You can also drag the slider to specify the minimum amount you would like to show on the graph.")
 except:
-    st.warning("Sorry, there was a problem reading the csv file.")
+    st.warning("Sorry, there was a problem reading the csv file. If you have not filled out the survey, please do so first.")
     
 # GRAPH 3: DYNAMIC GRAPH
 try:
