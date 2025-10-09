@@ -93,6 +93,6 @@ if os.path.exists('data.csv') and os.path.getsize('data.csv') > 0:
         #show the DataFrame as a table on screen
         st.dataframe(current_data_df)
     except:
-        st.warning("The 'data.csv' file is empty or does not exist yet.")
+        st.warning("The 'data.csv' file is empty or does not exist yet. Please fill out this survey to enter your data into the csv file.")
 else:
-    st.warning("The 'data.csv' file is empty or does not exist yet.")
+    st.warning("The 'data.csv' file is empty or does not exist yet. Please fill out this survey to enter your data into the csv file.")
