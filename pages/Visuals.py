@@ -160,9 +160,9 @@ try:
 )
     
     if st.session_state["balances"] == "Positive & Zero":
-        bar = csvdf[csvdf[amtCol] >= 0]
+        bar = csvdf[(csvdf[amtCol]) >= 0]
     elif st.session_state["balances"] == "Negative":
-        bar = csvdf[csvdf[amtCol] < 0]
+        bar = csvdf[(csvdf[amtCol]) < 0]
     else:
         bar = csvdf
 
