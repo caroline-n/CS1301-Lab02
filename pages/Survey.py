@@ -26,24 +26,24 @@ with st.form("survey_form"):
     value_input = st.text_input("How do you want to name your amount column?", placeholder="Amount")
     months = ["January", "February", "March", "April", "May", "June" , "July", "August", "September"]
 
-    sav1 = st.number_input("Enter your saving amount for January ($):",
-                                   value=0, step=50)
-    sav2 = st.number_input("Enter your saving amount for February:",
-                                   value=0, step=50)
-    sav3 = st.number_input("Enter your saving amount for March:",
-                                   value=0, step=50)
-    sav4 = st.number_input("Enter your saving amount for April:",
-                                   value=0, step=50)
-    sav5 = st.number_input("Enter your saving amount for May:",
-                                   value=0, step=50)
-    sav6 = st.number_input("Enter your saving amount for June:",
-                                   value=0, step=50)
-    sav7 = st.number_input("Enter your saving amount for July:",
-                                   value=0, step=50)
-    sav8 = st.number_input("Enter your saving amount for August:",
-                                   value=0, step=50)
-    sav9 = st.number_input("Enter your saving amount for September:",
-                                   value=0, step=50)
+    sav1 = str(st.number_input("Enter your saving amount for January ($):",
+                                   value=0, step=50))
+    sav2 = str(st.number_input("Enter your saving amount for February:",
+                                   value=0, step=50))
+    sav3 = str(st.number_input("Enter your saving amount for March:",
+                                   value=0, step=50))
+    sav4 = str(st.number_input("Enter your saving amount for April:",
+                                   value=0, step=50))
+    sav5 = str(st.number_input("Enter your saving amount for May:",
+                                   value=0, step=50))
+    sav6 = str(st.number_input("Enter your saving amount for June:",
+                                   value=0, step=50))
+    sav7 = str(st.number_input("Enter your saving amount for July:",
+                                   value=0, step=50))
+    sav8 = str(st.number_input("Enter your saving amount for August:",
+                                   value=0, step=50))
+    sav9 = str(st.number_input("Enter your saving amount for September:",
+                                   value=0, step=50))
     savings = [sav1, sav2, sav3, sav4, sav5, sav6, sav7, sav8, sav9]
     #if cleared:
     cleared = st.form_submit_button("Clear Data")
